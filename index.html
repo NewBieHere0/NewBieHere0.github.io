@@ -1,4 +1,40 @@
-<html>
-#Lalalala
-hello
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reverse IP Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    #output { margin-top: 20px; }
+    pre { background: #f0f0f0; padding: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Reverse IP Lookup</h1>
+  <div id="output">Loading...</div>
+
+  <script>
+    // Read ?ip= from URL
+    const params = new URLSearchParams(window.location.search);
+    const ip = params.get("ip");
+    const output = document.getElementById("output");
+
+    if (ip) {
+      output.textContent = "Looking up " + ip + "...";
+
+      // Replace URL below with the API you’re allowed to use
+      fetch("https://api.webscan.cc/?action=query&ip=" + encodeURIComponent(ip))
+        .then(res => res.json())
+        .then(data => {
+          output.innerHTML = "<h3>Result:</h3><pre>" + 
+                             JSON.stringify(data, null, 2) + "</pre>";
+        })
+        .catch(err => {
+          output.textContent = "Error: " + err;
+        });
+    } else {
+      output.textContent = "No IP provided. Use ?ip=1.1.1.1 in the URL.";
+    }
+  </script>
+</body>
 </html>
